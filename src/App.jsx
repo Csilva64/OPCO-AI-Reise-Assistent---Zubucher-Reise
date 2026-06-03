@@ -315,7 +315,7 @@ export default function App() {
   return (
     <>
       <div className="header">
-        <span className="header-flag">🌿</span>
+        <img src="/opco-logo.jpg" alt="OPCO Tours" className="header-logo" />
         <h1>OPCO-AI Reise-Assistent &mdash; <em>Brasilien Rundreise</em></h1>
         <p>OPCO Tours &middot; 11 Tage &middot; Rio · Iguazú · Amazonas</p>
         <div className="destinos-pills">
