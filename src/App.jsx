@@ -185,7 +185,6 @@ Klima Iguazú: Ähnlich, tropisch.
 Klima Amazonas: Tropisch, 28–35°C, Regenwahrscheinlichkeit täglich.
 Stecker: Typ N, 127V/220V, 60 Hz. Reiseadapter empfohlen.
 Leitungswasser: NICHT trinken — Flaschenwasser verwenden.
-Trinkgeld: 10–15% üblich.
 
 SICHERHEITSHINWEISE:
 - Schmuck im Hotel-Safe lassen
