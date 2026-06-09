@@ -169,6 +169,12 @@ MAO → FRA: Über LIS (TAP direkt Mo/Mi/Fr) oder über GRU/GIG
 - Hubby-eSIM-Gutschein 1 GB Daten (freies Internet in Brasilien)
 - Willkommens-Caipirinha bei Ankunft
 
+ALLGEMEINE GESCHÄFTSBEDINGUNGEN (AGB):
+- 20% Anzahlung bei Buchungsbestätigung
+- Restbetrag fällig 60 Tage vor Reisebeginn
+- Stornierungen: 100% Stornogebühr bei Stornierungen weniger als 59 Tage vor Reisebeginn
+- WICHTIG: Keine anderen Zahlungspläne oder Stornobedingungen als die oben genannten
+
 --- NICHT ENTHALTEN ---
 - Internationale Flüge
 - Inlandsflüge (GIG→IGU, IGU→MAO, MAO→FRA)
