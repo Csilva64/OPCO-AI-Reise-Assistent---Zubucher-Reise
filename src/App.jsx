@@ -192,7 +192,39 @@ SICHERHEITSHINWEISE:
 - In der Lodge: Insektenschutz, geschlossene Schuhe am Abend
 - Sonnenschutz besonders im Amazonas wichtig
 - Medikamente (Malariaprophylaxe je nach Arztempfehlung) mitbringen
-- Anweisungen der Reiseleitung in der Natur befolgen`
+- Anweisungen der Reiseleitung in der Natur befolgen
+
+KLIMA & WETTER:
+Jahresdurchschnitt: 25°C. Sommer: Höchstwerte 30°C, Tiefstwerte 22°C. Winter: Höchstwerte 25°C, Tiefstwerte 18°C.
+Beste Reisezeit Küste (Rio/Iguazú): Dezember–März. Amazonas ideal: Juni–November.
+Regenwahrscheinlichkeit im Amazonas: täglich — leichte Regenjacke/Poncho immer dabei haben.
+
+KLEIDUNGSEMPFEHLUNG:
+- Leichte, atmungsaktive Kleidung (Sommer/Frühling)
+- Regenschirm / leichter Regenponcho: Ja
+- Badeanzug: Ja
+- Hut, Sonnenbrille, Sonnencreme: Ja
+- Wanderschuhe (bequem, geschlossen): Ja
+- Langärmlige Shirts (Insektenschutz Amazonas): Ja
+- Lässige und elegante Freizeitkleidung für Abende: Ja
+- Schwere Winterkleidung: NICHT erforderlich
+
+ESSEN & TRINKEN:
+Brasiliens Nationalgericht: Feijoada (schwarze Bohnen mit Schweinefleisch, Reis, Collard Greens, Orangen) — normalerweise Mi/Sa in Restaurants.
+Empfehlung: Caipirinha (Limette, Zucker, Cachaça) — typisches brasilianisches Getränk.
+Leitungswasser: In Städten wie Rio meist trinkbar, in abgelegenen Gebieten (Amazonas) NICHT trinken — Flaschenwasser oder gefiltertes Wasser verwenden. Hotels filtern oft — nachfragen.
+
+INTERNET & STROM:
+Internet verfügbar in: Hotels, Restaurants, Cafés, Einkaufszentren, Parks.
+Stecker: Typ N | Spannung: 127V / 220V | Frequenz: 60 Hz.
+Reisesteckeradapter und ggf. Spannungswandler je nach Gerät erforderlich.
+
+NOTFALL-KONTAKTE:
+OPCO Tours: carlos@opcotours.com | +5521975655173 | Carlos Silva
+Amazon Ecopark Jungle Lodge: +55 92 3622-2612
+Blue Tree Premium Manaus: +55 92 3303-2000
+Hilton Rio de Janeiro Copacabana: +55 21 3501-8000
+Recanto Cataratas: +55 45 2102-3000`
 
 const ERROR_MSGS = {
   de: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns: carlos@opcotours.com | +5521975655173',
