@@ -25,6 +25,12 @@ const LANGS = {
     suggestions: ['Ver itinerario día a día', 'Hoteles y alojamiento', '¿Qué está incluido?', 'Consejos Amazonia', 'Precios y fechas', 'Contactos de emergencia'],
     sysLang: 'Responde SIEMPRE en español. Sé amigable, preciso y entusiasta. Usa emojis con moderación.',
   },
+  zh: {
+    placeholder: '请输入您关于旅行的问题...',
+    welcome: '欢迎！我是您的**OPCO-AI旅行助手**，专为**巴西环游之旅**服务。\n\n我将陪伴您完成**11天的旅程**——里约热内卢、伊瓜苏瀑布与亚马逊丛林。\n\n**今天有什么可以帮助您？**',
+    suggestions: ['查看每日行程', '酒店与住宿', '包含哪些服务？', '亚马逊旅行建议', '价格与出发日期', '紧急联系方式'],
+    sysLang: '请始终用简体中文回答。语气友好、准确、热情。适度使用表情符号。',
+  },
 }
 
 const TRIP = `VIAJE: Brasilien Rundreise — Rio de Janeiro · Iguazú · Amazonas-Dschungel (Zubucherreise)
@@ -237,6 +243,7 @@ const ERROR_MSGS = {
   pt: 'Ocorreu um erro. Tente novamente ou contate: carlos@opcotours.com | +5521975655173',
   en: 'An error occurred. Please try again or contact: carlos@opcotours.com | +5521975655173',
   es: 'Ocurrió un error. Inténtalo de nuevo o contacta: carlos@opcotours.com | +5521975655173',
+  zh: '发生错误，请重试或联系我们：carlos@opcotours.com | +5521975655173',
 }
 
 function BubbleText({ text }) {
@@ -365,13 +372,13 @@ export default function App() {
           <span className="pill">🐟 Piranha-Angeln</span>
         </div>
         <div className="lang-bar">
-          {['de', 'pt', 'en', 'es'].map(l => (
+          {['de', 'pt', 'en', 'es', 'zh'].map(l => (
             <button
               key={l}
               className={`lang-btn${lang === l ? ' active' : ''}`}
               onClick={() => switchLang(l)}
             >
-              {l === 'de' ? '🇩🇪 Deutsch' : l === 'pt' ? '🇧🇷 Português' : l === 'en' ? '🇬🇧 English' : '🇪🇸 Español'}
+              {l === 'de' ? '🇩🇪 Deutsch' : l === 'pt' ? '🇧🇷 Português' : l === 'en' ? '🇬🇧 English' : l === 'es' ? '🇪🇸 Español' : '🇨🇳 中文'}
             </button>
           ))}
         </div>
