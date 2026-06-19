@@ -68,8 +68,6 @@ async function askClaude(question) {
   return (data && data.content && data.content[0] && data.content[0].text) || 'Es tut mir leid, ich konnte keine Antwort finden.'
 }
 
-export const config = { api: { bodyParser: false } }
-
 async function readBody(req) {
   return new Promise((resolve) => {
     const chunks = []
