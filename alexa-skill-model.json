@@ -18,6 +18,21 @@
             "kannst du mir sagen {question}"
           ]
         },
+        {
+          "name": "ContinueIntent",
+          "slots": [],
+          "samples": [
+            "weiter",
+            "weitermachen",
+            "mehr",
+            "continue",
+            "und weiter",
+            "bitte weiter",
+            "nächste",
+            "noch mehr"
+          ]
+        },
+        { "name": "AMAZON.NextIntent", "samples": [] },
         { "name": "AMAZON.HelpIntent", "samples": [] },
         { "name": "AMAZON.CancelIntent", "samples": [] },
         { "name": "AMAZON.StopIntent", "samples": [] },
