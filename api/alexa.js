@@ -69,7 +69,8 @@ export default async function handler(req) {
 
   let body = {}
   try {
-    body = await req.json()
+    const parsed = await req.json()
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) body = parsed
   } catch (e) {
     body = {}
   }
