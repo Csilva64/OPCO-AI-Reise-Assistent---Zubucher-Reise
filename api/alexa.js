@@ -68,6 +68,24 @@ async function askClaude(question) {
   return (data && data.content && data.content[0] && data.content[0].text) || 'Es tut mir leid, ich konnte keine Antwort finden.'
 }
 
+export const config = { api: { bodyParser: false } }
+
+async function readBody(req) {
+  return new Promise((resolve) => {
+    const chunks = []
+    req.on('data', (chunk) => chunks.push(chunk))
+    req.on('end', () => {
+      try {
+        const raw = Buffer.concat(chunks).toString('utf8')
+        resolve(JSON.parse(raw))
+      } catch (e) {
+        resolve({})
+      }
+    })
+    req.on('error', () => resolve({}))
+  })
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.statusCode = 405
@@ -75,13 +93,12 @@ export default async function handler(req, res) {
     return
   }
 
-  let body = req.body
-  if (Buffer.isBuffer(body)) {
-    try { body = JSON.parse(body.toString('utf8')) } catch (e) { body = {} }
-  } else if (typeof body === 'string') {
-    try { body = JSON.parse(body) } catch (e) { body = {} }
+  let body = {}
+  if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
+    body = req.body
+  } else {
+    body = await readBody(req)
   }
-  if (!body || typeof body !== 'object' || Array.isArray(body)) body = {}
 
   const type = (body.request && body.request.type) || ''
   const session = (body.session && body.session.attributes) || {}
