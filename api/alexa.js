@@ -67,10 +67,12 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
   let body = req.body
-  if (typeof body === 'string') {
+  if (Buffer.isBuffer(body)) {
+    try { body = JSON.parse(body.toString('utf8')) } catch { body = {} }
+  } else if (typeof body === 'string') {
     try { body = JSON.parse(body) } catch { body = {} }
   }
-  if (!body) body = {}
+  if (!body || typeof body !== 'object') body = {}
 
   const type = body?.request?.type
   const session = body?.session?.attributes || {}
