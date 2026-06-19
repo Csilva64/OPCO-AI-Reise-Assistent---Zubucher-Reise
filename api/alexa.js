@@ -1,4 +1,7 @@
 // Alexa Skill handler — OPCO-AI Reise-Assistent Brasilien Rundreise
+// Vercel Edge Runtime (Web API — no Node.js body parser issue)
+
+export const config = { runtime: 'edge' }
 
 const SYSTEM_PROMPT = `Du bist der offizielle Sprach-Reiseassistent für die Brasilien Rundreise von OPCO Tours.
 Antworte in natürlicher Sprache, keine Markdown, keine Sternchen, keine Listen.
@@ -27,26 +30,17 @@ function chunkText(text) {
 }
 
 function speak(text, sessionAttrs, endSession) {
-  sessionAttrs = sessionAttrs || {}
-  endSession = endSession || false
-  return {
+  return new Response(JSON.stringify({
     version: '1.0',
-    sessionAttributes: sessionAttrs,
+    sessionAttributes: sessionAttrs || {},
     response: {
       outputSpeech: { type: 'PlainText', text: text },
       reprompt: endSession ? undefined : {
-        outputSpeech: { type: 'PlainText', text: 'Haben Sie noch eine Frage? Oder sagen Sie weiter fuer mehr.' }
+        outputSpeech: { type: 'PlainText', text: 'Haben Sie noch eine Frage? Sagen Sie weiter fuer mehr.' }
       },
-      shouldEndSession: endSession,
+      shouldEndSession: endSession || false,
     },
-  }
-}
-
-function send(res, obj) {
-  const json = JSON.stringify(obj)
-  res.setHeader('Content-Type', 'application/json')
-  res.statusCode = 200
-  res.end(json)
+  }), { status: 200, headers: { 'Content-Type': 'application/json' } })
 }
 
 async function askClaude(question) {
@@ -65,48 +59,30 @@ async function askClaude(question) {
     }),
   })
   const data = await r.json()
-  return (data && data.content && data.content[0] && data.content[0].text) || 'Es tut mir leid, ich konnte keine Antwort finden.'
+  return (data.content && data.content[0] && data.content[0].text) || 'Es tut mir leid, ich konnte keine Antwort finden.'
 }
 
-async function readBody(req) {
-  return new Promise((resolve) => {
-    const chunks = []
-    req.on('data', (chunk) => chunks.push(chunk))
-    req.on('end', () => {
-      try {
-        const raw = Buffer.concat(chunks).toString('utf8')
-        resolve(JSON.parse(raw))
-      } catch (e) {
-        resolve({})
-      }
-    })
-    req.on('error', () => resolve({}))
-  })
-}
-
-export default async function handler(req, res) {
+export default async function handler(req) {
   if (req.method !== 'POST') {
-    res.statusCode = 405
-    res.end()
-    return
+    return new Response(null, { status: 405 })
   }
 
   let body = {}
-  if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
-    body = req.body
-  } else {
-    body = await readBody(req)
+  try {
+    body = await req.json()
+  } catch (e) {
+    body = {}
   }
 
   const type = (body.request && body.request.type) || ''
   const session = (body.session && body.session.attributes) || {}
 
   if (type === 'LaunchRequest') {
-    return send(res, speak(
+    return speak(
       'Willkommen beim OPCO Brasilien Reise Assistenten! ' +
       'Ich beantworte Ihre Fragen zur Brasilien Rundreise durch Rio de Janeiro, Iguazuu und den Amazonas. ' +
       'Was moechten Sie wissen?'
-    ))
+    )
   }
 
   if (type === 'IntentRequest') {
@@ -114,51 +90,45 @@ export default async function handler(req, res) {
 
     if (intent === 'ContinueIntent' || intent === 'AMAZON.NextIntent') {
       const remaining = session.remaining || ''
-      if (!remaining) {
-        return send(res, speak('Es gibt nichts mehr hinzuzufuegen. Haben Sie eine neue Frage?'))
-      }
+      if (!remaining) return speak('Es gibt nichts mehr hinzuzufuegen. Haben Sie eine neue Frage?')
       const chunks = chunkText(remaining)
       const first = chunks[0]
       const rest = chunks.slice(1).join(' ')
       const suffix = rest.length > 0 ? ' Sagen Sie weiter fuer mehr.' : ''
-      return send(res, speak(first + suffix, { remaining: rest }))
+      return speak(first + suffix, { remaining: rest })
     }
 
     if (intent === 'AMAZON.HelpIntent') {
-      return send(res, speak(
-        'Sie koennen mich zu Ihrer Brasilien Rundreise befragen. ' +
-        'Bei langen Antworten sagen Sie einfach weiter.'
-      ))
+      return speak('Sie koennen mich zu Ihrer Brasilien Rundreise befragen. Bei langen Antworten sagen Sie weiter.')
     }
 
     if (intent === 'AMAZON.CancelIntent' || intent === 'AMAZON.StopIntent') {
-      return send(res, speak('Auf Wiedersehen und eine gute Reise nach Brasilien!', {}, true))
+      return speak('Auf Wiedersehen und eine gute Reise nach Brasilien!', {}, true)
     }
 
     if (intent === 'AskQuestionIntent') {
       const question = body.request.intent.slots && body.request.intent.slots.question && body.request.intent.slots.question.value
-      if (!question) {
-        return send(res, speak('Ich habe Ihre Frage leider nicht verstanden. Bitte wiederholen Sie.'))
-      }
+      if (!question) return speak('Ich habe Ihre Frage leider nicht verstanden. Bitte wiederholen Sie.')
       try {
         const fullAnswer = await askClaude(question)
         const chunks = chunkText(fullAnswer)
         const first = chunks[0]
         const rest = chunks.slice(1).join(' ')
         const suffix = rest.length > 0 ? ' Sagen Sie weiter fuer den Rest.' : ''
-        return send(res, speak(first + suffix, { remaining: rest }))
+        return speak(first + suffix, { remaining: rest })
       } catch (e) {
-        return send(res, speak('Es ist ein technischer Fehler aufgetreten. Bitte kontaktieren Sie OPCO Tours.'))
+        return speak('Es ist ein technischer Fehler aufgetreten. Bitte kontaktieren Sie OPCO Tours.')
       }
     }
 
-    return send(res, speak('Das habe ich leider nicht verstanden. Stellen Sie mir eine Frage zur Brasilien Rundreise.'))
+    return speak('Das habe ich leider nicht verstanden. Stellen Sie mir eine Frage zur Brasilien Rundreise.')
   }
 
   if (type === 'SessionEndedRequest') {
-    return send(res, { version: '1.0', response: {} })
+    return new Response(JSON.stringify({ version: '1.0', response: {} }), {
+      status: 200, headers: { 'Content-Type': 'application/json' }
+    })
   }
 
-  // Fallback — return valid Alexa response for anything else
-  return send(res, speak('Hallo, ich bin der OPCO Brasilien Reise Assistent. Wie kann ich helfen?'))
+  return speak('Hallo, ich bin der OPCO Brasilien Reise Assistent. Wie kann ich helfen?')
 }
