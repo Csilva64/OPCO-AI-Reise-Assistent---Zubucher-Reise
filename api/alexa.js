@@ -64,7 +64,10 @@ async function askClaude(question) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end()
+  if (req.method !== 'POST') {
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(405).end()
+  }
 
   let body = req.body
   if (Buffer.isBuffer(body)) {
@@ -76,6 +79,12 @@ export default async function handler(req, res) {
 
   const type = body?.request?.type
   const session = body?.session?.attributes || {}
+
+  // Debug: always return valid Alexa response for unknown type
+  if (!type) {
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(200).end(JSON.stringify(speak('Skill empfangen. Kein Anfragetyp erkannt.')))
+  }
 
   // Launch
   if (type === 'LaunchRequest') {
