@@ -9,7 +9,6 @@
             { "name": "question", "type": "AMAZON.SearchQuery" }
           ],
           "samples": [
-            "{question}",
             "ich habe eine frage {question}",
             "was ist {question}",
             "wie ist {question}",

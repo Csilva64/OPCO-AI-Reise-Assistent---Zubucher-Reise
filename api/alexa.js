@@ -66,7 +66,12 @@ async function askClaude(question) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const body = req.body
+  let body = req.body
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body) } catch { body = {} }
+  }
+  if (!body) body = {}
+
   const type = body?.request?.type
   const session = body?.session?.attributes || {}
 
